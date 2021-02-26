@@ -137,7 +137,7 @@ def handle_message(config, incoming_json):
             pr = u_pr.handle_github_message(config, incoming_json)
             if pr:
                 d_pr.sync_with_jira(pr, config)
-        elif ('issue' in incoming_json.keys()):
+        elif ('issue' in incoming_json.keys() and '/pull/' not in incoming_json['issue']['html_url']):
             issue = u_issue.handle_github_message(config, incoming_json)
             if issue:
                 d_issue.sync_with_jira(issue, config)
