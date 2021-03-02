@@ -100,9 +100,9 @@ def _matching_jira_issue_query(client, issue, config, free=False):
     :returns: results: Returns a list of matching JIRA issues if any are found
     :rtype: List
     """
-    # Searches for any remote link to the issue.url\
-    issue_title = issue.title.replace('[', '').replace(']', '').replace('"', '')
-    query = f'summary ~ "{issue_title}"'
+    # Searches for any remote link to the issue.url
+    issue_title = issue.title.replace('[', '').replace(']', '').replace('"', '').replace('(', '').replace(')', '')
+    query = f'summary ~ "{issue_title}" OR text ~ "{issue.url}"'
 
     # Query the JIRA client and store the results
     results_of_query = client.search_issues(query)
