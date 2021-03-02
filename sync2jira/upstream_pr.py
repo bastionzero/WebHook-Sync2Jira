@@ -194,7 +194,7 @@ def github_prs(upstream, config):
             # to the new label list and then reassign the message
             new_label = []
             for label in pr.labels:
-                new_label.append(label['name'])
+                new_label.append(label.name)
             final_pr['labels'] = new_label
 
         # Update milestone:

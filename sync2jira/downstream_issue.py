@@ -100,9 +100,9 @@ def _matching_jira_issue_query(client, issue, config, free=False):
     :returns: results: Returns a list of matching JIRA issues if any are found
     :rtype: List
     """
-    # Searches for any remote link to the issue.url\
-    issue_title = issue.title.replace('[', '').replace(']', '')
-    query = f'summary ~ "{issue_title}"'
+    # Searches for any remote link to the issue.url
+    issue_title = issue.title.replace('[', '').replace(']', '').replace('"', '').replace('(', '').replace(')', '')
+    query = f'summary ~ "{issue_title}" OR text ~ "{issue.url}"'
 
     # Query the JIRA client and store the results
     results_of_query = client.search_issues(query)
@@ -971,3 +971,6 @@ def get_jira_username_from_github(config, github_login):
     for name, data in config['mapping'].items():
         if name == github_login:
             return data['jira']
+    
+    # Else return the default JIRA credentials
+    return config['mapping']['default_jira_id']
