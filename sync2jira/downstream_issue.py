@@ -971,3 +971,6 @@ def get_jira_username_from_github(config, github_login):
     for name, data in config['mapping'].items():
         if name == github_login:
             return data['jira']
+    
+    # Else return the default JIRA credentials
+    return config['mapping']['default_jira_id']
