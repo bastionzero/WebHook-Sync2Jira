@@ -65,7 +65,7 @@ def handle_github_message(config, msg):
     github_client = Github(config['sync2jira']['github_token'])
 
     # If there are no comments just make an empty array
-    if msg['pull_request']['comments'] == 0:
+    if msg['pull_request'].get('comments', 0) == 0:
         msg['pull_request']['comments'] = []
     else:
         # We have multiple comments and need to make api call to get them
