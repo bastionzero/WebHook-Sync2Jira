@@ -237,15 +237,28 @@ def matcher(content, comments):
         # Parse to extract the JIRA information. 2 types of matches:
         # 1 - To match to JIRA issue (i.e. Relates to JIRA: FACTORY-1234)
         # 2 - To match to upstream issue (i.e. Relates to Issue: !5)
-        match_jira = re.findall("Relates to JIRA: ([\w]*-[\d]*)",  # noqa W605
-                                all_data)
-        if match_jira:
-            for match in match_jira:
+
+        ## Split out everything before Related JIRA tickets header and take second element since it contains the relevant JIRA tickets
+        all_data.split("Related JIRA tickets\r\n\r\n")[1]
+
+        ## Match for pattern using regex
+        tickets = re.findall("([\w]*-[\d]*)", all_data)
+
+        ## Remove single '-' from list since '-' occur alone in all_data and 
+        ## also remove duplicate jira ticket ids
+        jira_tickets = list(set([i for i in tickets if len(i) != 1]))        
+
+        final_list = []
+
+        if jira_tickets:
+            for match in jira_tickets:
                 # Assert that the match was correct
-                if re.match("[\w]*-[\d]*", match): # noqa W605
-                    return match
-        else:
-            return None
+                if re.search("[\w]*-[\d]*", match) and re.search("/d", match): # noqa W605
+                    final_list.append(match)
+                else:
+                    return None
+
+        return final_list
 
 def trimCommentBody(commentBody):
     """
