@@ -37,20 +37,21 @@ class Issue(object):
 
         # JIRA treats utf-8 characters in ways we don't totally understand, so scrub content down to
         # simple ascii characters right from the start.
-        self.content = content.encode('ascii', errors='replace').decode('ascii')
+        if content is not None: 
+            self.content = content.encode('ascii', errors='replace').decode('ascii')
 
-        # We also apply this content in regexs to pattern match, so remove any escape characters
-        self.content = self.content.replace('\\', '')
+            # We also apply this content in regexs to pattern match, so remove any escape characters
+            self.content = self.content.replace('\\', '')
 
-        self.reporter = reporter
-        self.assignee = assignee
-        self.status = status
-        self.id = str(id)
-        self.upstream_id = upstream_id
-        if not downstream:
-            self.downstream = config['sync2jira']['map'][self.source][upstream]
-        else:
-            self.downstream = downstream
+            self.reporter = reporter
+            self.assignee = assignee
+            self.status = status
+            self.id = str(id)
+            self.upstream_id = upstream_id
+            if not downstream:
+                self.downstream = config['sync2jira']['map'][self.source][upstream]
+            else:
+                self.downstream = downstream
 
     @property
     def title(self):
@@ -249,7 +250,6 @@ def matcher(content, comments):
         jira_tickets = list(set([i for i in tickets if len(i) != 1]))        
 
         final_list = []
-
         if jira_tickets:
             for match in jira_tickets:
                 # Assert that the match was correct
