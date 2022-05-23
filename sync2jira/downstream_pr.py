@@ -17,6 +17,7 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 # Built-In Modules
+from http.client import ResponseNotReady
 import logging
 
 # 3rd Party Modules
@@ -181,8 +182,9 @@ def sync_with_jira(pr, config):
     if isinstance(pr, Issue):
         pr.jira_key = matcher(pr.content, pr.comments)
 
-    for i in pr.jira_key:
-        query = f"Key = {pr.i}"
+    for jira_key in pr.jira_key:
+        query = f"Key = {jira_key}"
+        log.info(f'HERE: {query}')
         try:
             response = client.search_issues(query)
         # Throw error and return if nothing could be found
@@ -196,6 +198,7 @@ def sync_with_jira(pr, config):
 
         # Existing JIRA issue is the only one in the query
         existing = response[0]  
+        log.info(f'Existing:: {existing}')
 
     # Else start syncing relevant information
     log.info(f"Syncing PR {pr.title}")
