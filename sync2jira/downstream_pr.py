@@ -197,10 +197,10 @@ def sync_with_jira(pr, config):
         # Existing JIRA issue is the only one in the query
         existing = response[0]  
 
-    # Else start syncing relevant information
-    log.info(f"Syncing PR {pr.title}")
-    update_jira_issue(existing, pr, client, config)
-    log.info(f"Done syncing PR {pr.title}")
+        # Else start syncing relevant information
+        log.info(f"Syncing PR {pr.title}")
+        update_jira_issue(existing, pr, client, config)
+        log.info(f"Done syncing PR {pr.title}")
 
 def get_jira_username_from_github(config, github_login):
     """ Helper function to get JIRA username from Github login """
