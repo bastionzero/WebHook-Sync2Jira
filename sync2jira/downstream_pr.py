@@ -184,7 +184,6 @@ def sync_with_jira(pr, config):
 
     for jira_key in pr.jira_key:
         query = f"Key = {jira_key}"
-        log.info(f'HERE: {query}')
         try:
             response = client.search_issues(query)
         # Throw error and return if nothing could be found
@@ -195,15 +194,12 @@ def sync_with_jira(pr, config):
         # If no issue exists, it will throw a JIRA error
             log.warning(f'No JIRA issue exists for PR: {pr.title}. Query: {query}')
             return
-
         # Existing JIRA issue is the only one in the query
         existing = response[0]  
-        log.info(f'Existing:: {existing}')
-
-    # Else start syncing relevant information
-    log.info(f"Syncing PR {pr.title}")
-    update_jira_issue(existing, pr, client, config)
-    log.info(f"Done syncing PR {pr.title}")
+        # Else start syncing relevant information
+        log.info(f"Syncing PR {pr.title}")
+        update_jira_issue(existing, pr, client, config)
+        log.info(f"Done syncing PR {pr.title}")
 
 def get_jira_username_from_github(config, github_login):
     """ Helper function to get JIRA username from Github login """
