@@ -30,6 +30,7 @@ from jira import JIRAError
 from datetime import datetime
 import jinja2
 import pypandoc
+import dateutil.parser as parser
 
 # Local Modules
 from sync2jira.intermediary import Issue, PR
@@ -143,8 +144,8 @@ def _matching_jira_issue_query(client, issue, config, free=False):
                     final_results.append(search)
         if not final_results:
             # Just return the most updated issue
-            results_of_query.sort(key=lambda x: datetime.strptime(
-                x.fields.updated, '%Y-%m-%dT%H:%M:%S.%f+0000'))
+            results_of_query.sort(key=lambda x: parser.parse(
+                x.fields.updated))
             final_results.append(results_of_query[0])
 
         # Return the final_results

@@ -195,6 +195,7 @@ def sync_with_jira(pr, config):
             return
         # Existing JIRA issue is the only one in the query
         existing = response[0]  
+        
         # Else start syncing relevant information
         log.info(f"Syncing PR {pr.title}")
         update_jira_issue(existing, pr, client, config)
