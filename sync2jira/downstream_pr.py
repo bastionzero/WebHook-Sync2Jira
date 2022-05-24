@@ -181,8 +181,8 @@ def sync_with_jira(pr, config):
     if isinstance(pr, Issue):
         pr.jira_key = matcher(pr.content, pr.comments)
 
-    for i in pr.jira_key:
-        query = f"Key = {pr.i}"
+    for jira_key in pr.jira_key:
+        query = f"Key = {jira_key}"
         try:
             response = client.search_issues(query)
         # Throw error and return if nothing could be found
@@ -193,10 +193,9 @@ def sync_with_jira(pr, config):
         # If no issue exists, it will throw a JIRA error
             log.warning(f'No JIRA issue exists for PR: {pr.title}. Query: {query}')
             return
-
         # Existing JIRA issue is the only one in the query
         existing = response[0]  
-
+        
         # Else start syncing relevant information
         log.info(f"Syncing PR {pr.title}")
         update_jira_issue(existing, pr, client, config)
