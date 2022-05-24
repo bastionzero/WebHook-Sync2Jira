@@ -251,9 +251,6 @@ def matcher(content, comments=[]):
                 # Assert that the match was correct
                 if re.search("[\w]*-[\d]*", match) and re.search("\d", match): # noqa W605
                     final_list.append(match)
-                else:
-                    return None
-
         return final_list
 
 def trimCommentBody(commentBody):
