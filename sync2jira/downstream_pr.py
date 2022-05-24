@@ -17,7 +17,6 @@
 #
 # Authors:  Ralph Bean <rbean@redhat.com>
 # Built-In Modules
-from http.client import ResponseNotReady
 import logging
 
 # 3rd Party Modules
