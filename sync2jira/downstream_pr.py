@@ -185,14 +185,14 @@ def sync_with_jira(pr, config):
         query = f"Key = {jira_key}"
         try:
             response = client.search_issues(query)
-        # Throw error and return if nothing could be found
+            # Continue to next potential match if 0 or more than 1 issue is found
             if len(response) == 0 or len(response) > 1:
-                log.warning(f'No JIRA issue could be found for {pr.title}')
-                return
+                log.warning(f'{len(response)} JIRA issues found for {pr.title}. Query: {query}')
+                continue
         except JIRAError:
-        # If no issue exists, it will throw a JIRA error
+            # Continue to next potential match on JIRA error
             log.warning(f'No JIRA issue exists for PR: {pr.title}. Query: {query}')
-            return
+            continue
         # Existing JIRA issue is the only one in the query
         existing = response[0]  
         
